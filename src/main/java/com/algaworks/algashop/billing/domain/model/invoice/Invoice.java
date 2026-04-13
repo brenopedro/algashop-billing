@@ -1,13 +1,17 @@
 package com.algaworks.algashop.billing.domain.model.invoice;
 
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+@Getter
+@Setter(AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Invoice {
 
@@ -32,4 +36,24 @@ public class Invoice {
     private Payer payer;
 
     private String canelReason;
+
+    public Set<LineItem> getItems() {
+        return Collections.unmodifiableSet(this.items);
+    }
+
+    public void markAsPaid() {
+
+    }
+
+    public void cancel() {
+
+    }
+
+    public void assignPaymentGatewayCode(String code) {
+
+    }
+
+    public void changePaymentSettings(PaymentMethod paymentMethod, UUID creditCard) {
+
+    }
 }

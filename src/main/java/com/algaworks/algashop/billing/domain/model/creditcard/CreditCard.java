@@ -1,10 +1,13 @@
 package com.algaworks.algashop.billing.domain.model.creditcard;
 
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+@Getter
+@Setter(AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CreditCard {
 
@@ -16,5 +19,7 @@ public class CreditCard {
     private String brand;
     private Integer expMonth;
     private Integer expYear;
+
+    @Setter(AccessLevel.PUBLIC)
     private String gatewayCode;
 }

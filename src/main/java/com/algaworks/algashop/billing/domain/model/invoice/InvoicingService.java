@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class InvoicesService {
+public class InvoicingService {
 
     private final InvoiceRepository invoiceRepository;
 

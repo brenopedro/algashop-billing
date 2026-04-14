@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Billing" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.algaworks.algashop.billing.BillingApplication" />
+    <module name="billing.main" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

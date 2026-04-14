@@ -1,6 +1,7 @@
 package com.algaworks.algashop.billing.domain.model.invoice;
 
 import com.algaworks.algashop.billing.domain.model.FieldValidations;
+import jakarta.persistence.Embeddable;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -8,6 +9,7 @@ import java.util.Objects;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)
+@Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 public class LineItem {

@@ -1,5 +1,6 @@
 package com.algaworks.algashop.billing.domain.model.invoice;
 
+import com.algaworks.algashop.billing.domain.model.AbstractAuditableEntity;
 import com.algaworks.algashop.billing.domain.model.DomainException;
 import com.algaworks.algashop.billing.domain.model.IdGenerator;
 import jakarta.persistence.*;
@@ -15,8 +16,8 @@ import java.util.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Invoice {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class Invoice extends AbstractAuditableEntity {
 
     @Id
     @EqualsAndHashCode.Include
@@ -123,8 +124,8 @@ public class Invoice {
             throw new DomainException(String.format("Invoice %s with status %s cannot be edited",
                     this.getId(), this.getStatus().toString().toLowerCase()));
         }
-        PaymentSettings paymentSettings = PaymentSettings.brandNew(method, creditCardId);
-        paymentSettings.setInvoice(this);
-        this.setPaymentSettings(paymentSettings);
+        PaymentSettings payment = PaymentSettings.brandNew(method, creditCardId);
+        payment.setInvoice(this);
+        this.setPaymentSettings(payment);
     }
 }

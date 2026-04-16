@@ -43,10 +43,12 @@ class InvoiceManagementApplicationServiceIT {
 
     @Test
     void shouldGenerateInvoiceWithCreditCardAsPayment() {
-        CreditCard creditCard = CreditCardTestDataBuilder.aCreditCard().build();
-        creditCardRepository.saveAndFlush(creditCard);
-
         GenerateInvoiceInput input = GenerateInvoiceInputTestDataBuilder.anInput().build();
+
+        CreditCard creditCard = CreditCardTestDataBuilder.aCreditCard()
+                .customerId(input.getCustomerId())
+                .build();
+        creditCardRepository.saveAndFlush(creditCard);
 
         input.setPaymentSettings(
                 PaymentSettingsInput.builder()
@@ -61,6 +63,11 @@ class InvoiceManagementApplicationServiceIT {
 
         assertThat(invoice.getStatus()).isEqualTo(InvoiceStatus.UNPAID);
         assertThat(invoice.getOrderId()).isEqualTo(input.getOrderId());
+
+        assertThat(invoice.getVersion()).isZero();
+        assertThat(invoice.getCreatedAt()).isNotNull();
+        assertThat(invoice.getCreatedByUserId()).isNotNull();
+
 
         verify(invoicingService).issue(any(), any(), any(), any());
     }

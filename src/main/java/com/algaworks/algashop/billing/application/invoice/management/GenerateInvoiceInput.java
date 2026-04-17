@@ -12,10 +12,10 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GenerateInvoiceInput{
+public class GenerateInvoiceInput {
     private String orderId;
     private UUID customerId;
     private PaymentSettingsInput paymentSettings;
     private PayerData payer;
-    private Set items;
+    private Set<LineItemInput> items;
 }

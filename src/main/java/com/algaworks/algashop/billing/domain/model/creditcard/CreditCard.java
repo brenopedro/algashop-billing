@@ -21,7 +21,7 @@ public class CreditCard {
     @Id
     @EqualsAndHashCode.Include
     private UUID id;
-    private OffsetDateTime createAt;
+    private OffsetDateTime createdAt;
     private UUID customerId;
     private String lastNumbers;
     private String brand;

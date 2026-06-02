@@ -5,6 +5,6 @@ import java.util.UUID;
 
 public interface CreditCardProviderService {
     LimitedCreditCard register(UUID customerId, String tokenizedCard);
-    Optional<LimitedCreditCard> findById(String providerCreditCar);
+    Optional<LimitedCreditCard> findById(String gatewayCode);
     void delete(String gatewayCode);
 }

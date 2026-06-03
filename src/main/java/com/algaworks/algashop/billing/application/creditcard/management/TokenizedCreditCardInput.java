@@ -1,7 +1,6 @@
 package com.algaworks.algashop.billing.application.creditcard.management;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.UUID;
@@ -9,7 +8,6 @@ import java.util.UUID;
 @Data
 public class TokenizedCreditCardInput {
 
-    @NotNull
     private UUID customerId;
 
     @NotBlank

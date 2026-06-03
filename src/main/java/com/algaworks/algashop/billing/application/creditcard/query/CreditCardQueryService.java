@@ -5,5 +5,5 @@ import java.util.UUID;
 
 public interface CreditCardQueryService {
     CreditCardOutput findOne(UUID customerId, UUID creditCardId);
-    List<CreditCardOutput> findAByCustomerId(UUID customerId);
+    List<CreditCardOutput> findByCustomer(UUID customerId);
 }

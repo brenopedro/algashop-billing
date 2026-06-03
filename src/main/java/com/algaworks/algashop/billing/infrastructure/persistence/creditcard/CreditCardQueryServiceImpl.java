@@ -28,7 +28,7 @@ public class CreditCardQueryServiceImpl implements CreditCardQueryService {
     }
 
     @Override
-    public List<CreditCardOutput> findAByCustomerId(UUID customerId) {
+    public List<CreditCardOutput> findByCustomer(UUID customerId) {
         return creditCardRepository.findAllByCustomerId(customerId)
                 .stream().map(creditCard -> mapper.convert(creditCard, CreditCardOutput.class))
                 .toList();

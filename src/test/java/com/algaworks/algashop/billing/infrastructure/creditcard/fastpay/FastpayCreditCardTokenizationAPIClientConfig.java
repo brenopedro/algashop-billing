@@ -12,15 +12,13 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 public class FastpayCreditCardTokenizationAPIClientConfig {
 
     @Bean
-    public FastpayCreditCardTokenizationAPIClient fastpayCreditCardTokenizationAPIClient (
-            RestClient.Builder builder,
+    public FastpayCreditCardTokenizationAPIClient fastpayCreditCardTokenizationAPIClient(
             AlgashopPaymentProperties properties,
-            @Value("{algashop.integrations.payment.fastpay.public-token}") String publicToken
+            @Value("${algashop.integrations.payment.fastpay.public-token}") String publicToken
     ) {
-
         var fastpayProperties = properties.getFastpay();
 
-        RestClient restClient = builder.baseUrl(fastpayProperties.getHostname())
+        RestClient restClient = RestClient.builder().baseUrl(fastpayProperties.getHostname())
                 .requestInterceptor(((request, body, execution) -> {
                     request.getHeaders().add("Token", publicToken);
                     return execution.execute(request, body);

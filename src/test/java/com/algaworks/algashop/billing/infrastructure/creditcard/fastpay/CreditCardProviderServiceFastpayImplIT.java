@@ -1,31 +1,24 @@
 package com.algaworks.algashop.billing.infrastructure.creditcard.fastpay;
 
 import com.algaworks.algashop.billing.domain.model.creditcard.LimitedCreditCard;
+import com.algaworks.algashop.billing.infrastructure.AbstractFastpayIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.Year;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Import(FastpayCreditCardTokenizationAPIClientConfig.class)
 @ActiveProfiles("test")
-class CreditCardProviderServiceFastpayImplIT {
+class CreditCardProviderServiceFastpayImplIT extends AbstractFastpayIT {
 
     @Autowired
     private CreditCardProviderServiceFastpayImpl creditCardProvider;
-
-    @Autowired
-    private FastpayCreditCardTokenizationAPIClient tokenizationAPIClient;
-
-    private static final UUID validCustomerId = UUID.randomUUID();
-    private static final String alwaysPaidCardNumber = "4622943127011022";
 
     @Test
     void shouldCreateCreditCard() {
@@ -53,20 +46,6 @@ class CreditCardProviderServiceFastpayImplIT {
         Optional<LimitedCreditCard> possibleCreditCard = creditCardProvider.findById(limitedCreditCard.getGatewayCode());
 
         assertThat(possibleCreditCard).isEmpty();
-    }
-
-    private LimitedCreditCard registerCard() {
-        FastpayTokenizationInput input = FastpayTokenizationInput.builder()
-                .number(alwaysPaidCardNumber)
-                .cvv("222")
-                .expMonth(1)
-                .holderName("John Doe")
-                .holderDocument("12345")
-                .expYear(Year.now().getValue() + 5)
-                .build();
-
-        FastpayTokenizedCreditCardModel response = tokenizationAPIClient.tokenize(input);
-        return creditCardProvider.register(validCustomerId, response.getTokenizedCard());
     }
 
 }

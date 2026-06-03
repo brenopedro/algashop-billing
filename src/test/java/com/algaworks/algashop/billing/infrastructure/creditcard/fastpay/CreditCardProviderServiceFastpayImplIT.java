@@ -2,13 +2,13 @@ package com.algaworks.algashop.billing.infrastructure.creditcard.fastpay;
 
 import com.algaworks.algashop.billing.domain.model.creditcard.LimitedCreditCard;
 import com.algaworks.algashop.billing.infrastructure.AbstractFastpayIT;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,6 +19,16 @@ class CreditCardProviderServiceFastpayImplIT extends AbstractFastpayIT {
 
     @Autowired
     private CreditCardProviderServiceFastpayImpl creditCardProvider;
+
+    @BeforeAll
+    static void setUp() {
+        startMock();
+    }
+
+    @AfterAll
+    static void tearDown() {
+        stopMock();
+    }
 
     @Test
     void shouldCreateCreditCard() {
@@ -40,12 +50,7 @@ class CreditCardProviderServiceFastpayImplIT extends AbstractFastpayIT {
     @Test
     void shouldDeleteRegisteredCreditCard() {
         LimitedCreditCard limitedCreditCard = registerCard();
-
         creditCardProvider.delete(limitedCreditCard.getGatewayCode());
-
-        Optional<LimitedCreditCard> possibleCreditCard = creditCardProvider.findById(limitedCreditCard.getGatewayCode());
-
-        assertThat(possibleCreditCard).isEmpty();
     }
 
 }

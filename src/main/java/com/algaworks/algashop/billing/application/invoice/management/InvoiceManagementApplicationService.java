@@ -27,7 +27,7 @@ public class InvoiceManagementApplicationService {
 
     public UUID generate(GenerateInvoiceInput input) {
         PaymentSettingsInput paymentSettings = input.getPaymentSettings();
-        verifyCreditCardId(input.getPaymentSettings().getCreditCardId(), input.getCustomerId());
+        verifyCreditCardId(input.getPaymentSettings().getCreditCardId());
 
         Payer payer = convertToPayer(input.getPayer());
         Set<LineItem> items = convertToLineItems(input.getItems());
@@ -105,8 +105,8 @@ public class InvoiceManagementApplicationService {
 
     }
 
-    private void verifyCreditCardId(UUID creditCardId, UUID customerId) {
-        if (creditCardId != null && !creditCardRepository.existsByIdAndCustomerId(creditCardId, customerId)) {
+    private void verifyCreditCardId(UUID creditCardId) {
+        if (creditCardId != null && !creditCardRepository.existsById(creditCardId)) {
             throw new CreditCardNotFoundException();
         }
     }

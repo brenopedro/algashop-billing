@@ -9,13 +9,9 @@ import com.algaworks.algashop.billing.domain.model.invoice.payment.Payment;
 import com.algaworks.algashop.billing.domain.model.invoice.payment.PaymentGatewayService;
 import com.algaworks.algashop.billing.domain.model.invoice.payment.PaymentRequest;
 import com.algaworks.algashop.billing.infrastructure.payment.AlgashopPaymentProperties;
-import com.algaworks.algashop.billing.presentation.BadGatewayException;
-import com.algaworks.algashop.billing.presentation.GatewayTimeoutException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.ResourceAccessException;
 
 import java.util.UUID;
 
@@ -24,7 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PaymentGatewayServiceFastpayImpl implements PaymentGatewayService {
 
-    private final FastpayPaymentAPIClient fastpayPaymentAPIClient;
+    private final ResilientFastpayPaymentAPIClient fastpayPaymentAPIClient;
     private final CreditCardRepository creditCardRepository;
 
     private final AlgashopPaymentProperties algashopPaymentProperties;
@@ -32,27 +28,13 @@ public class PaymentGatewayServiceFastpayImpl implements PaymentGatewayService {
     @Override
     public Payment capture(PaymentRequest request) {
         FastpayPaymentInput input = convertToInput(request);
-        FastpayPaymentModel response;
-        try {
-            response = fastpayPaymentAPIClient.capture(input);
-        } catch (ResourceAccessException ex) {
-            throw new GatewayTimeoutException("Fastpay API Timeout", ex);
-        } catch (HttpClientErrorException ex) {
-            throw new BadGatewayException("Fastpay API Bad Gateway", ex);
-        }
+        FastpayPaymentModel response = fastpayPaymentAPIClient.capture(input);
         return convertToPayment(response);
     }
 
     @Override
     public Payment findByCode(String gatewayCode) {
-        FastpayPaymentModel response;
-        try {
-            response = fastpayPaymentAPIClient.findById(gatewayCode);
-        } catch (ResourceAccessException ex) {
-            throw new GatewayTimeoutException("Fastpay API Timeout", ex);
-        } catch (HttpClientErrorException ex) {
-            throw new BadGatewayException("Fastpay API Bad Gateway", ex);
-        }
+        FastpayPaymentModel response = fastpayPaymentAPIClient.findById(gatewayCode);
         return convertToPayment(response);
     }
 

@@ -18,6 +18,8 @@ import org.springframework.web.client.RestClientException;
 
 import java.net.SocketTimeoutException;
 
+import static com.algaworks.algashop.billing.infrastructure.resilience.SpringCircuitBreakerConfig.FASTPAY_PAYMENT_CB_ID;
+
 @Component
 @Slf4j
 public class ResilientFastpayPaymentAPIClient {
@@ -29,7 +31,7 @@ public class ResilientFastpayPaymentAPIClient {
                                                     FrameworkRetryConfigBuilder> circuitBreakerFactory,
                                             FastpayPaymentAPIClient fastpayPaymentAPIClient) {
         this.fastpayPaymentAPIClient = fastpayPaymentAPIClient;
-        this.circuitBreaker = (FrameworkRetryCircuitBreaker) circuitBreakerFactory.create("fastpayPaymentCB");
+        this.circuitBreaker = (FrameworkRetryCircuitBreaker) circuitBreakerFactory.create(FASTPAY_PAYMENT_CB_ID);
     }
 
     @ConcurrencyLimit(10)

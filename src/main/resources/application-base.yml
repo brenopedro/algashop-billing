@@ -11,8 +11,33 @@ spring:
   flyway:
     enabled: false
     locations: classpath:db/migration
+  cloud:
+    discovery:
+      client:
+        composite-indicator:
+          enabled: false
 
 algashop:
   integrations:
     payment:
       provider: FASTPAY
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+      group:
+        readiness:
+          include:
+            - db
+            - readinessState
+  info:
+    env.enabled: true
+
+info:
+  app.name: Algashop Billing API

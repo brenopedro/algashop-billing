@@ -4,6 +4,7 @@ import com.algaworks.algashop.billing.application.invoice.management.GenerateInv
 import com.algaworks.algashop.billing.application.invoice.management.InvoiceManagementApplicationService;
 import com.algaworks.algashop.billing.application.invoice.query.InvoiceOutput;
 import com.algaworks.algashop.billing.application.invoice.query.InvoiceQueryService;
+import com.algaworks.algashop.billing.infrastructure.security.SecurityAnnotations;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +23,14 @@ public class InvoiceController {
     private final InvoiceManagementApplicationService invoiceManagementApplicationService;
 
     @GetMapping
+    @SecurityAnnotations.CanReadInvoices
     public InvoiceOutput findByOrder(@PathVariable String orderId) {
         return invoiceQueryService.findByOrderId(orderId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @SecurityAnnotations.CanWriteInvoices
     public InvoiceOutput generate(@PathVariable String orderId,
                                   @RequestBody @Valid GenerateInvoiceInput input) {
         input.setOrderId(orderId);
